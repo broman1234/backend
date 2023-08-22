@@ -59,11 +59,11 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         val customAuthenticationFilter =
             CustomAuthenticationFilter(authenticationManager(http, bCryptPasswordEncoder()), jwtTokenUtil)
-        customAuthenticationFilter.setFilterProcessesUrl("/api/login")
+        customAuthenticationFilter.setFilterProcessesUrl("/api/auth/login")
         http.csrf().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests { authz ->
-            authz.antMatchers("/api/login/**").permitAll()
+            authz.antMatchers("/api/auth/login/**").permitAll()
             authz.antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER")
             authz.antMatchers(HttpMethod.POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN")
             authz.anyRequest().authenticated()
@@ -119,7 +119,7 @@ class CustomAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (request.servletPath == "/api/login") {
+        if (request.servletPath == "/api/auth/login") {
             filterChain.doFilter(request, response)
         } else {
             val authorizationHeader = request.getHeader("Authorization")
