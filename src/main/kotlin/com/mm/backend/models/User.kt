@@ -1,6 +1,9 @@
+package com.mm.backend.models
+
 import javax.persistence.*
 
-@Entity(name = "users")
+@Entity
+@Table(name = "users")
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +22,8 @@ data class User(
     val roles: List<Role> =  mutableListOf()
 )
 
-@Entity(name = "roles")
+@Entity
+@Table(name = "roles")
 data class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

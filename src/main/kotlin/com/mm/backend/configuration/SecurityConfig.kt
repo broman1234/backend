@@ -23,7 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
-import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -34,10 +33,9 @@ import javax.servlet.http.HttpServletResponse
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
-    private val userDetailsService: UserDetailsService,
     private val jwtTokenUtil: JwtTokenUtil,
-    private val customUserDetailsService: CustomUserDetailsService,
-    private val userRepository: UserRepository
+    private val userDetailsService: UserDetailsService,
+    private val userRepository: UserRepository,
 ) {
 
     @Bean
@@ -56,9 +54,9 @@ class SecurityConfig(
     }
 
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity, authenticationManager: AuthenticationManager): SecurityFilterChain {
         val customAuthenticationFilter =
-            CustomAuthenticationFilter(authenticationManager(http, bCryptPasswordEncoder()), jwtTokenUtil)
+            CustomAuthenticationFilter(authenticationManager, jwtTokenUtil)
         customAuthenticationFilter.setFilterProcessesUrl("/api/auth/login")
         http.csrf().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -69,13 +67,11 @@ class SecurityConfig(
             authz.anyRequest().authenticated()
         }
         http.addFilter(customAuthenticationFilter)
-        http.addFilterBefore(CustomAuthorizationFilter(jwtTokenUtil, userRepository, customUserDetailsService), UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(CustomAuthorizationFilter(jwtTokenUtil, userRepository, userDetailsService), UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
 }
 
-
-@Component
 class CustomAuthenticationFilter(
     private val authenticationManager: AuthenticationManager,
     private val jwtTokenUtil: JwtTokenUtil
@@ -110,7 +106,7 @@ class CustomAuthenticationFilter(
 class CustomAuthorizationFilter(
     private val jwtTokenUtil: JwtTokenUtil,
     private val userRepository: UserRepository,
-    private val customUserDetailsService: CustomUserDetailsService
+    private val userDetailsService: UserDetailsService
 ) :
     OncePerRequestFilter() {
 
@@ -128,7 +124,7 @@ class CustomAuthorizationFilter(
                     val token = authorizationHeader.substring("Bearer ".length)
                     val username = jwtTokenUtil.getUsernameFromToken(token)
                     val user = userRepository.findByUsername(username)?: throw UsernameNotFoundException("User not found with username: $username")
-                    val userDetails = customUserDetailsService.loadUserByUsername(user.username)
+                    val userDetails = userDetailsService.loadUserByUsername(user.username)
                     if (!jwtTokenUtil.validateToken(token, userDetails)) {
                         filterChain.doFilter(request, response)
                         return
