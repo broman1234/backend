@@ -1,13 +1,15 @@
 package com.mm.backend.models
 
+import lombok.RequiredArgsConstructor
 import javax.persistence.*
 
 @Entity
 @Table(name = "users")
+@RequiredArgsConstructor
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long = 0,
 
     val username: String,
 
