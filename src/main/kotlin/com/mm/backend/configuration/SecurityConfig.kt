@@ -61,9 +61,8 @@ class SecurityConfig(
         http.csrf().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests { authz ->
-            authz.antMatchers("/api/auth/login/**").permitAll()
+            authz.antMatchers("/api/auth/**").permitAll()
             authz.antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER")
-            authz.antMatchers(HttpMethod.POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN")
             authz.anyRequest().authenticated()
         }
         http.addFilter(customAuthenticationFilter)
@@ -115,7 +114,7 @@ class CustomAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (request.servletPath == "/api/auth/login") {
+        if (request.servletPath.matches(Regex("^/api/auth.*"))) {
             filterChain.doFilter(request, response)
         } else {
             val authorizationHeader = request.getHeader("Authorization")
@@ -126,8 +125,7 @@ class CustomAuthorizationFilter(
                     val user = userRepository.findByUsername(username)?: throw UsernameNotFoundException("User not found with username: $username")
                     val userDetails = userDetailsService.loadUserByUsername(user.username)
                     if (!jwtTokenUtil.validateToken(token, userDetails)) {
-                        filterChain.doFilter(request, response)
-                        return
+                        throw Exception("invalid jwt access token")
                     }
                     val authenticationToken =
                         UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)

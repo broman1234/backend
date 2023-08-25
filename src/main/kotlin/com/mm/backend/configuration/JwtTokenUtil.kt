@@ -21,7 +21,7 @@ class JwtTokenUtil {
 
     fun generateToken(userDetails: UserDetails): String {
         val claims = HashMap<String, Any>()
-        return createToken(claims, userDetails.username)
+        return createToken(claims, userDetails.username, 3 * 60)
     }
 
     fun generateTokenWithRoles(userDetails: UserDetails): String {
@@ -29,13 +29,13 @@ class JwtTokenUtil {
         claims["roles"] = userDetails.authorities.stream()
             .map { obj: GrantedAuthority -> obj.authority }
             .collect(Collectors.toList())
-        return createToken(claims, userDetails.username)
+        return createToken(claims, userDetails.username, 60)
     }
 
-    private fun createToken(claims: Map<String, Any>, subject: String): String {
+    private fun createToken(claims: Map<String, Any>, subject: String, validity: Long): String {
         val now = System.currentTimeMillis()
         val issuedAt = Date(now)
-        val expiresAt = Date(now + JWT_TOKEN_VALIDITY * 1000)
+        val expiresAt = Date(now + validity * 1000)
 
         return Jwts.builder()
             .setClaims(claims)

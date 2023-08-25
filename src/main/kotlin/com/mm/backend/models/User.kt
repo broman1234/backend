@@ -15,7 +15,7 @@ data class User(
 
     val password: String,
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",
         joinColumns = [JoinColumn(name = "user_id")],
@@ -29,7 +29,7 @@ data class User(
 data class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long = 0,
 
     val roleName: String,
 
