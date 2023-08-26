@@ -62,7 +62,7 @@ class SecurityConfig(
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests { authz ->
             authz.antMatchers("/api/auth/**").permitAll()
-            authz.antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_USER")
+            authz.antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_ADMIN")
             authz.anyRequest().authenticated()
         }
         http.addFilter(customAuthenticationFilter)
@@ -124,9 +124,6 @@ class CustomAuthorizationFilter(
                     val username = jwtTokenUtil.getUsernameFromToken(token)
                     val user = userRepository.findByUsername(username)?: throw UsernameNotFoundException("User not found with username: $username")
                     val userDetails = userDetailsService.loadUserByUsername(user.username)
-                    if (!jwtTokenUtil.validateToken(token, userDetails)) {
-                        throw Exception("invalid jwt access token")
-                    }
                     val authenticationToken =
                         UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                     authenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)

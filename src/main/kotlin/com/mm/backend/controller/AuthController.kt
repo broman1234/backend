@@ -52,10 +52,7 @@ class AuthController(
                     val username = jwtTokenUtil.getUsernameFromToken(refreshToken)
                     val user = userRepository.findByUsername(username)?: throw UsernameNotFoundException("User not found with username: $username")
                     val userDetails = userDetailsService.loadUserByUsername(user.username)
-                    if (!jwtTokenUtil.validateToken(refreshToken, userDetails)) {
-                        throw Exception("invalid jwt refresh token")
-                    }
-                    val newAccessToken = jwtTokenUtil.generateToken(userDetails)
+                    val newAccessToken = jwtTokenUtil.generateTokenWithRoles(userDetails)
                     val tokens = mapOf(
                         "access_token" to newAccessToken,
                         "refresh_token" to refreshToken
