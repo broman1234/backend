@@ -77,9 +77,14 @@ class CustomAuthenticationFilter(
 ) :
     UsernamePasswordAuthenticationFilter() {
 
+    private val objectMapper = ObjectMapper()
+
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
-        val username = request.getParameter("username")
-        val password = request.getParameter("password")
+        val requestBody = request.reader.readText()
+        val jsonNode = objectMapper.readTree(requestBody)
+
+        val username = jsonNode["username"].asText()
+        val password = jsonNode["password"].asText()
         val authenticationToken = UsernamePasswordAuthenticationToken(username, password)
         return authenticationManager.authenticate(authenticationToken)
     }
