@@ -6,3 +6,8 @@ data class RegisterUserRequest(
     val roles: List<String>
 )
 
+data class LoginUserRequest(
+    val username: String,
+    val password: String
+)
+
