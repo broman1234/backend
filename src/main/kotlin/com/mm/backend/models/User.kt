@@ -15,13 +15,18 @@ data class User(
 
     val password: String,
 
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
-    val roles: List<Role> =  mutableListOf()
+    val roles: List<Role> =  mutableListOf(),
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    val comments: List<Comment> = mutableListOf(),
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    val books: List<Book> = mutableListOf(),
 )
 
 @Entity
@@ -32,7 +37,4 @@ data class Role(
     val id: Long = 0,
 
     val roleName: String,
-
-    @ManyToMany(mappedBy = "roles")
-    val users: List<User> = mutableListOf()
 )
