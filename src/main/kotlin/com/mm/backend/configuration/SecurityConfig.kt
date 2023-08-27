@@ -62,6 +62,7 @@ class SecurityConfig(
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests { authz ->
             authz.antMatchers("/api/auth/**").permitAll()
+            authz.antMatchers(HttpMethod.GET, "/api/roles").permitAll()
             authz.antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ROLE_ADMIN")
             authz.anyRequest().authenticated()
         }
