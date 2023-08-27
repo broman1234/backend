@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.mm.backend.configuration.JwtTokenUtil
 import com.mm.backend.dto.LoginUserRequest
 import com.mm.backend.dto.RegisterUserRequest
+import com.mm.backend.models.Role
 import com.mm.backend.repository.UserRepository
+import com.mm.backend.service.RoleService
 import com.mm.backend.service.UserService
 import mu.KLogging
 import org.springframework.http.HttpStatus
@@ -22,7 +24,8 @@ class AuthController(
     private val userService: UserService,
     private val jwtTokenUtil: JwtTokenUtil,
     private val userRepository: UserRepository,
-    private val userDetailsService: UserDetailsService
+    private val userDetailsService: UserDetailsService,
+    private val rolesService: RoleService
 ) {
 
     companion object : KLogging() {
@@ -43,6 +46,11 @@ class AuthController(
             registerUserRequest.roles
         )
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser)
+    }
+
+    @GetMapping("/roles")
+    fun getRoles(): List<Role> {
+        return rolesService.getRoles()
     }
 
     @GetMapping("/token/refresh")
