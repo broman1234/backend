@@ -5,6 +5,7 @@ import com.mm.backend.configuration.JwtTokenUtil
 import com.mm.backend.dto.LoginUserRequest
 import com.mm.backend.dto.RegisterUserRequest
 import com.mm.backend.models.Role
+import com.mm.backend.models.User
 import com.mm.backend.repository.UserRepository
 import com.mm.backend.service.RoleService
 import com.mm.backend.service.UserService
@@ -39,13 +40,14 @@ class AuthController(
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody registerUserRequest: RegisterUserRequest): ResponseEntity<Any> {
-        val registeredUser = userService.registerUser(
+    @ResponseStatus(HttpStatus.CREATED)
+    fun register(@RequestBody registerUserRequest: RegisterUserRequest): User {
+        val registeredUser =  userService.registerUser(
             registerUserRequest.username,
             registerUserRequest.password,
             registerUserRequest.roles
         )
-        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser)
+        return registeredUser
     }
 
     @GetMapping("/roles")

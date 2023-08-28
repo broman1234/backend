@@ -58,7 +58,7 @@ class SecurityConfig(
         val customAuthenticationFilter =
             CustomAuthenticationFilter(authenticationManager, jwtTokenUtil)
         customAuthenticationFilter.setFilterProcessesUrl("/api/auth/login")
-        http.csrf().disable()
+        http.csrf().disable().cors().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.authorizeRequests { authz ->
             authz.antMatchers("/api/auth/**").permitAll()
