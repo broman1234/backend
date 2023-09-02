@@ -22,6 +22,11 @@ class ExceptionHandler {
         return returnApiErrorResponseEntity(request, exception, HttpStatus.UNPROCESSABLE_ENTITY)
     }
 
+    @ExceptionHandler(UsernameAlreadyExistsException::class)
+    fun handleUsernameExistsException(exception: UsernameAlreadyExistsException, request: WebRequest): ResponseEntity<Any> {
+        return returnApiErrorResponseEntity(request, exception, HttpStatus.CONFLICT)
+    }
+
     private fun returnApiErrorResponseEntity(
         request: WebRequest,
         exception: Exception,

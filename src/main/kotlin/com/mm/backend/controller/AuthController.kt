@@ -41,12 +41,11 @@ class AuthController(
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     fun register(@RequestBody registerUserRequest: RegisterUserRequest): User {
-        val registeredUser =  userService.registerUser(
+        return userService.registerUser(
             registerUserRequest.username,
             registerUserRequest.password,
             registerUserRequest.roles
         )
-        return registeredUser
     }
 
     @GetMapping("/roles")
