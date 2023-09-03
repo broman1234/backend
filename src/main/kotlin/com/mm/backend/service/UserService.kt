@@ -3,7 +3,6 @@ package com.mm.backend.service
 import com.mm.backend.exception.UsernameAlreadyExistsException
 import com.mm.backend.models.Role
 import com.mm.backend.models.User
-import com.mm.backend.repository.RoleRepository
 import com.mm.backend.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -17,7 +16,7 @@ class UserService(
 
         val existingUser = userRepository.findByUsername(username)
         if (existingUser != null) {
-            throw UsernameAlreadyExistsException("Username '$username' already exists.")
+            throw UsernameAlreadyExistsException()
         }
         val encoder = BCryptPasswordEncoder()
         val result: String = encoder.encode(password)

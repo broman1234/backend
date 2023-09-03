@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import kotlin.math.exp
 
 @ExtendWith(MockKExtension::class)
 @DisplayName("BookServiceTest")
@@ -30,6 +29,7 @@ internal class BookServiceTest {
             title = "the picture of Dorian Gray",
             author = "Oscar Wilde",
             category = "fiction",
+            publisher = "Galaxy",
             description = "a famous Irish writer and playwright. " +
                     "It was first published in 1890 and is considered one of Wilde's most significant works. " +
                     "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +

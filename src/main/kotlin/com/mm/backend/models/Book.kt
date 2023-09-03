@@ -1,5 +1,6 @@
 package com.mm.backend.models
 
+import jakarta.validation.constraints.NotBlank
 import javax.persistence.*
 
 @Entity
@@ -8,13 +9,18 @@ data class Book(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
+    @NotBlank(message = "Title is required")
     val title: String,
+    @NotBlank(message = "Author is required")
     val author: String,
+    @NotBlank(message = "Category is required")
     val category: String,
-    val description: String,
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @NotBlank(message = "Publisher is required")
+    val publisher: String,
+    val description: String? = null,
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     val comments: List<Comment>? = null,
-    @ManyToMany
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
     val users: List<User>? = null
 )
 

@@ -21,11 +21,16 @@ data class User(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
-    val roles: List<Role> =  mutableListOf(),
+    val roles: List<Role> = mutableListOf(),
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     val comments: List<Comment> = mutableListOf(),
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_books",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "book_id")]
+    )
     val books: List<Book> = mutableListOf(),
 )
 
