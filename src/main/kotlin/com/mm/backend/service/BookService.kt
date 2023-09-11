@@ -9,7 +9,7 @@ class BookService(
     private val bookRepository: BookRepository
 ) {
 
-    fun addBook(book: Book): Book {
-        return bookRepository.save(book)
+    fun addBook(book: Book) {
+        bookRepository.save(book)
     }
 }
