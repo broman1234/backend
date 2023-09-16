@@ -24,7 +24,5 @@ class BookController(
     }
 
     @GetMapping
-    fun getBooks(): List<Book> {
-        return bookService.getBooks()
-    }
+    fun getBooks(): List<Book> = bookService.getBooks()
 }

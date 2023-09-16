@@ -1,6 +1,7 @@
 package com.mm.backend.exception
 
 import mu.KLogging
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -25,6 +26,11 @@ class ExceptionHandler {
 
     @ExceptionHandler(UsernameAlreadyExistsException::class)
     fun handleUsernameExistsException(exception: UsernameAlreadyExistsException, request: WebRequest): ResponseEntity<Any> {
+        return returnApiErrorResponseEntity(request, exception, httpStatus = HttpStatus.CONFLICT)
+    }
+
+    @ExceptionHandler(BookAlreadyExistsException::class)
+    fun handleUniqueConstraintsException(exception: BookAlreadyExistsException, request: WebRequest): ResponseEntity<Any> {
         return returnApiErrorResponseEntity(request, exception, httpStatus = HttpStatus.CONFLICT)
     }
 
