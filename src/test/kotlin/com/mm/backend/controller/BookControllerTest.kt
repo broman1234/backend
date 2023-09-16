@@ -2,6 +2,7 @@ package com.mm.backend.controller
 
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
+import com.mm.backend.testmodels.BookTestModel
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -23,23 +24,27 @@ internal class BookControllerTest {
     @InjectMockKs
     private lateinit var bookController: BookController
 
+    private val book1 = BookTestModel.book1
+    private val book2 = BookTestModel.book2
+
     @Test
     @DisplayName("should return book successfully when adding a book")
     fun addBook() {
-        val expectedBook = Book(
-            title = "the picture of Dorian Gray",
-            author = "Oscar Wilde",
-            category = "fiction",
-            publisher = "Galaxy",
-            description = "a famous Irish writer and playwright. " +
-                    "It was first published in 1890 and is considered one of Wilde's most significant works. " +
-                    "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                    "and the corrupting influence of art and beauty"
-        )
         every { bookService.addBook(any()) }.returns(Unit)
 
-        bookController.addBook(expectedBook)
+        bookController.addBook(book1)
 
-        verify(exactly = 1) { bookService.addBook(expectedBook) }
+        verify(exactly = 1) { bookService.addBook(book1) }
+    }
+
+    @Test
+    @DisplayName("should get book list successfully")
+    fun getBooks() {
+        every { bookService.getBooks()}.returns(listOf(book1, book2))
+
+        val books = bookController.getBooks()
+
+        verify(exactly = 1) { bookService.getBooks()}
+        assertThat(books).isEqualTo(listOf(book1, book2))
     }
 }

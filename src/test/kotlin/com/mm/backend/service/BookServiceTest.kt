@@ -2,6 +2,7 @@ package com.mm.backend.service
 
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
+import com.mm.backend.testmodels.BookTestModel
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -23,23 +24,27 @@ internal class BookServiceTest {
     @InjectMockKs
     private lateinit var bookService: BookService
 
+    private val book1 = BookTestModel.book1
+    private val book2 = BookTestModel.book2
+
     @Test
     @DisplayName("should return added book when adding a new book")
     fun addBook() {
-        val expectedBook = Book(
-            title = "the picture of Dorian Gray",
-            author = "Oscar Wilde",
-            category = "fiction",
-            publisher = "Galaxy",
-            description = "a famous Irish writer and playwright. " +
-                    "It was first published in 1890 and is considered one of Wilde's most significant works. " +
-                    "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                    "and the corrupting influence of art and beauty"
-        )
-        every { bookRepository.save(any()) }.returns(expectedBook)
+        every { bookRepository.save(any()) }.returns(book1)
 
-        bookService.addBook(expectedBook)
+        bookService.addBook(book1)
 
-        verify (exactly = 1) { bookRepository.save(expectedBook) }
+        verify(exactly = 1) { bookRepository.save(book1) }
+    }
+
+    @Test
+    @DisplayName("should get books successfully")
+    fun getBooks() {
+        every { bookRepository.findAll() }.returns(listOf(book1, book2))
+
+        val books = bookService.getBooks()
+
+        verify(exactly = 1) { bookRepository.findAll()}
+        assertThat(books).isEqualTo(listOf(book1, book2))
     }
 }

@@ -12,4 +12,6 @@ class BookService(
     fun addBook(book: Book) {
         bookRepository.save(book)
     }
+
+    fun getBooks(): List<Book> = bookRepository.findAll()
 }

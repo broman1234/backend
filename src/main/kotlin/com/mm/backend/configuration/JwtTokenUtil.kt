@@ -29,7 +29,7 @@ class JwtTokenUtil {
         claims["roles"] = userDetails.authorities.stream()
             .map { obj: GrantedAuthority -> obj.authority }
             .collect(Collectors.toList())
-        return createToken(claims, userDetails.username, 60)
+        return createToken(claims, userDetails.username, JWT_TOKEN_VALIDITY)
     }
 
     private fun createToken(claims: Map<String, Any>, subject: String, validity: Long): String {

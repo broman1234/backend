@@ -4,6 +4,7 @@ import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -20,5 +21,10 @@ class BookController(
     @ResponseStatus(HttpStatus.CREATED)
     fun addBook(@Valid @RequestBody book: Book) {
         return bookService.addBook(book)
+    }
+
+    @GetMapping
+    fun getBooks(): List<Book> {
+        return bookService.getBooks()
     }
 }
