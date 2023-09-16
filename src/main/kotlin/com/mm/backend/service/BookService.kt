@@ -15,9 +15,9 @@ class BookService(
 ) {
 
     @Transactional
-    fun addBook(book: Book) {
+    fun addBook(book: Book): Book {
         try {
-            bookRepository.save(book)
+            return bookRepository.save(book)
         } catch (e: DataIntegrityViolationException) {
             throw BookAlreadyExistsException(e.message)
         }

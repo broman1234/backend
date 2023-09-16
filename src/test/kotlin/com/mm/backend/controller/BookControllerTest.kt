@@ -36,11 +36,12 @@ internal class BookControllerTest {
     @Test
     @DisplayName("should return book successfully when adding a book")
     fun addBook() {
-        every { bookService.addBook(any()) }.returns(Unit)
+        every { bookService.addBook(any()) }.returns(book1)
 
-        bookController.addBook(book1)
+        val book = bookController.addBook(book1)
 
         verify(exactly = 1) { bookService.addBook(book1) }
+        assertThat(book).isEqualTo(book1)
     }
 
     @Test

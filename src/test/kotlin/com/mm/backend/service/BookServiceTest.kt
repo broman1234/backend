@@ -37,9 +37,10 @@ internal class BookServiceTest {
     fun addBook() {
         every { bookRepository.save(any()) }.returns(book1)
 
-        bookService.addBook(book1)
+        val book = bookService.addBook(book1)
 
         verify(exactly = 1) { bookRepository.save(book1) }
+        assertThat(book).isEqualTo(book1)
     }
 
     @Test

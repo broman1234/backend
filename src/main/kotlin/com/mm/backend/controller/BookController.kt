@@ -23,7 +23,7 @@ class BookController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addBook(@Valid @RequestBody book: Book) {
+    fun addBook(@Valid @RequestBody book: Book): Book{
         return bookService.addBook(book)
     }
 
