@@ -3,6 +3,10 @@ package com.mm.backend.controller
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,5 +28,5 @@ class BookController(
     }
 
     @GetMapping
-    fun getBooks(): List<Book> = bookService.getBooks()
+    fun getBooks(@PageableDefault(page = 0, size = 20, sort = ["title"], direction = Sort.Direction.ASC) pageable: Pageable): Page<Book> = bookService.getBooks(pageable)
 }

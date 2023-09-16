@@ -4,6 +4,8 @@ import com.mm.backend.exception.BookAlreadyExistsException
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -21,5 +23,5 @@ class BookService(
         }
     }
 
-    fun getBooks(): List<Book> = bookRepository.findAll()
+    fun getBooks(pageable: Pageable): Page<Book> = bookRepository.findAll(pageable)
 }

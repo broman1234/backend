@@ -13,6 +13,12 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.http.MediaType
 
 @ExtendWith(MockKExtension::class)
 @DisplayName("BookControllerTest")
@@ -40,11 +46,14 @@ internal class BookControllerTest {
     @Test
     @DisplayName("should get book list successfully")
     fun getBooks() {
-        every { bookService.getBooks()}.returns(listOf(book1, book2))
+        val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
+        val books = listOf(book1, book2)
+        val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
+        every { bookService.getBooks(any())}.returns(pagedBooks)
 
-        val books = bookController.getBooks()
+        val actualPagedBooks = bookController.getBooks(pageable)
 
-        verify(exactly = 1) { bookService.getBooks()}
-        assertThat(books).isEqualTo(listOf(book1, book2))
+        verify(exactly = 1) { bookService.getBooks(pageable)}
+        assertThat(actualPagedBooks).isEqualTo(pagedBooks)
     }
 }
