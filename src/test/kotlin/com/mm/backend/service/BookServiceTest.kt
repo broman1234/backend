@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -37,8 +38,8 @@ internal class BookServiceTest {
         )
         every { bookRepository.save(any()) }.returns(expectedBook)
 
-        val returnedBook = bookService.addBook(expectedBook)
+        bookService.addBook(expectedBook)
 
-        assertThat(returnedBook).isEqualTo(expectedBook)
+        verify (exactly = 1) { bookRepository.save(expectedBook) }
     }
 }

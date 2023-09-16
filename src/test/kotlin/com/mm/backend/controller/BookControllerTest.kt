@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -35,10 +36,10 @@ internal class BookControllerTest {
                     "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
                     "and the corrupting influence of art and beauty"
         )
-        every { bookService.addBook(any()) }.returns(expectedBook)
+        every { bookService.addBook(any()) }.returns(Unit)
 
-        val returnedBook = bookController.addBook(expectedBook)
+        bookController.addBook(expectedBook)
 
-        assertThat(returnedBook).isEqualTo(expectedBook)
+        verify(exactly = 1) { bookService.addBook(expectedBook) }
     }
 }
