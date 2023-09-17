@@ -23,10 +23,17 @@ class BookController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addBook(@Valid @RequestBody book: Book): Book{
+    fun addBook(@Valid @RequestBody book: Book): Book {
         return bookService.addBook(book)
     }
 
     @GetMapping
-    fun getBooks(@PageableDefault(page = 0, size = 20, sort = ["title"], direction = Sort.Direction.ASC) pageable: Pageable): Page<Book> = bookService.getBooks(pageable)
+    fun getBooks(
+        @PageableDefault(
+            page = 0,
+            size = 20,
+            sort = ["title"],
+            direction = Sort.Direction.ASC
+        ) pageable: Pageable
+    ): Page<Book> = bookService.getBooks(pageable)
 }
