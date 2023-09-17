@@ -62,9 +62,6 @@ class ExceptionHandler {
             )
         }
 
-        return ResponseEntity(
-            exception.javaClass.simpleName,
-            httpStatus
-        )
+        return ResponseEntity.status(httpStatus).body(exception.javaClass.simpleName)
     }
 }
