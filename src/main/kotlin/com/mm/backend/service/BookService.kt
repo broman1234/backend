@@ -1,6 +1,7 @@
 package com.mm.backend.service
 
 import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.BookSpecifications
 import com.mm.backend.exception.BookAlreadyExistsException
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
@@ -27,6 +28,6 @@ class BookService(
     fun getBooks(pageable: Pageable): Page<Book> = bookRepository.findAll(pageable)
 
     fun getBooksByRequest(bookRequest: BookRequest, pageable: Pageable): Page<Book> {
-        return bookRepository.findAllByRequest(bookRequest, pageable)
+        return bookRepository.findAll(BookSpecifications.withRequest(bookRequest), pageable)
     }
 }
