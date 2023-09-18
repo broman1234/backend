@@ -1,5 +1,6 @@
 package com.mm.backend.controller
 
+import com.mm.backend.dto.BookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
 import jakarta.validation.Valid
@@ -31,9 +32,17 @@ class BookController(
     fun getBooks(
         @PageableDefault(
             page = 0,
-            size = 20,
+            size = 5,
             sort = ["title"],
             direction = Sort.Direction.ASC
         ) pageable: Pageable
     ): Page<Book> = bookService.getBooks(pageable)
+
+    @GetMapping
+    fun getBooksByRequest(@RequestBody bookRequest: BookRequest, @PageableDefault(
+        page = 0,
+        size = 5,
+        sort = ["title"],
+        direction = Sort.Direction.ASC
+    ) pageable: Pageable): Page<Book> = bookService.getBooksByRequest(bookRequest, pageable)
 }

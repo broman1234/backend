@@ -1,5 +1,6 @@
 package com.mm.backend.service
 
+import com.mm.backend.dto.BookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
 import com.mm.backend.testmodels.BookTestModel
@@ -53,7 +54,23 @@ internal class BookServiceTest {
 
         val actualPagedBook = bookService.getBooks(pageable)
 
-        verify(exactly = 1) { bookRepository.findAll(pageable)}
+        verify(exactly = 1) { bookRepository.findAll(pageable) }
         assertThat(actualPagedBook).isEqualTo(pagedBooks)
+    }
+
+    @Test
+    @DisplayName("should get books given book request with only book title")
+    fun getBooksByBookTitle() {
+        val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
+        val books = listOf(book1, book2)
+        val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
+        every { bookRepository.findAllByRequest(any(), any()) }.returns(pagedBooks)
+        val bookRequest = BookRequest("the picture of Dorian Gray", null, null, null)
+
+        val actualBooks =
+            bookService.getBooksByRequest(bookRequest, pageable)
+
+        verify(exactly = 1) { bookRepository.findAllByRequest(bookRequest, pageable) }
+        assertThat(actualBooks).isEqualTo(pagedBooks)
     }
 }

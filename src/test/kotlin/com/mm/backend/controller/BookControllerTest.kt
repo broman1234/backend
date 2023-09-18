@@ -1,5 +1,6 @@
 package com.mm.backend.controller
 
+import com.mm.backend.dto.BookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
 import com.mm.backend.testmodels.BookTestModel
@@ -18,7 +19,6 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.http.MediaType
 
 @ExtendWith(MockKExtension::class)
 @DisplayName("BookControllerTest")
@@ -50,11 +50,32 @@ internal class BookControllerTest {
         val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
         val books = listOf(book1, book2)
         val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
-        every { bookService.getBooks(any())}.returns(pagedBooks)
+        every { bookService.getBooks(any()) }.returns(pagedBooks)
 
         val actualPagedBooks = bookController.getBooks(pageable)
 
-        verify(exactly = 1) { bookService.getBooks(pageable)}
+        verify(exactly = 1) { bookService.getBooks(pageable) }
         assertThat(actualPagedBooks).isEqualTo(pagedBooks)
+    }
+
+    @Test
+    @DisplayName("should get book given book title")
+    fun getBookByTitle() {
+        val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
+        val books = listOf(book1, book2)
+        val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
+        val bookRequest = BookRequest("the picture of Dorian Gray", null, null, null)
+        every { bookService.getBooksByRequest(any(), any()) }.returns(pagedBooks)
+
+        val actualBooks =
+            bookController.getBooksByRequest(
+                BookRequest(
+                    "the picture of Dorian Gray",
+                    null,
+                    null,
+                    null), pageable)
+
+        verify(exactly = 1) { bookService.getBooksByRequest(bookRequest, pageable) }
+        assertThat(actualBooks).isEqualTo(pagedBooks)
     }
 }
