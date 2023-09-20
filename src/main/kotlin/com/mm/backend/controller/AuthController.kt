@@ -29,7 +29,6 @@ class AuthController(
 ) {
 
     companion object : KLogging() {
-
     }
 
 
