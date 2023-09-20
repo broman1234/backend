@@ -20,7 +20,6 @@ object BookSpecifications {
         return Specification { root: Root<Book>, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder ->
             val predicates = mutableListOf<Predicate>()
 
-            // 添加查询条件，只有当属性值不为空时才包括它们
             if (!bookRequest.title.isNullOrBlank()) {
                 predicates.add(criteriaBuilder.like(root.get("title"), "%" + bookRequest.title + "%"))
             }
