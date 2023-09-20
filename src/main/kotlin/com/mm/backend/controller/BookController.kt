@@ -28,7 +28,7 @@ class BookController(
         return bookService.addBook(book)
     }
 
-    @GetMapping
+    @GetMapping("/all")
     fun getBooks(
         @PageableDefault(
             page = 0,
