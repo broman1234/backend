@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,18 +29,8 @@ class BookController(
         return bookService.addBook(book)
     }
 
-    @GetMapping("/all")
-    fun getBooks(
-        @PageableDefault(
-            page = 0,
-            size = 5,
-            sort = ["title"],
-            direction = Sort.Direction.ASC
-        ) pageable: Pageable
-    ): Page<Book> = bookService.getBooks(pageable)
-
     @GetMapping
-    fun getBooksByRequest(@RequestBody bookRequest: BookRequest, @PageableDefault(
+    fun getBooksByRequest(bookRequest: BookRequest, @PageableDefault(
         page = 0,
         size = 5,
         sort = ["title"],
