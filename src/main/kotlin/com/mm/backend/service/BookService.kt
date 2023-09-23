@@ -24,9 +24,6 @@ class BookService(
             throw BookAlreadyExistsException(e.message)
         }
     }
-
-    fun getBooks(pageable: Pageable): Page<Book> = bookRepository.findAll(pageable)
-
     fun getBooksByRequest(bookRequest: BookRequest, pageable: Pageable): Page<Book> {
         return bookRepository.findAll(BookSpecifications.withRequest(bookRequest), pageable)
     }

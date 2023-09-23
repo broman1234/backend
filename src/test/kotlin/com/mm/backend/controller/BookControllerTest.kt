@@ -50,11 +50,12 @@ internal class BookControllerTest {
         val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
         val books = listOf(book1, book2)
         val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
-        every { bookService.getBooks(any()) }.returns(pagedBooks)
+        val bookRequest = BookRequest()
+        every { bookService.getBooksByRequest(any(), any()) }.returns(pagedBooks)
 
-        val actualPagedBooks = bookController.getBooks(pageable)
+        val actualPagedBooks = bookController.getBooksByRequest(bookRequest, pageable)
 
-        verify(exactly = 1) { bookService.getBooks(pageable) }
+        verify(exactly = 1) { bookService.getBooksByRequest(bookRequest, pageable) }
         assertThat(actualPagedBooks).isEqualTo(pagedBooks)
     }
 
