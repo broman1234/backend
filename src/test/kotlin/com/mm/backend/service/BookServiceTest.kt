@@ -1,6 +1,7 @@
 package com.mm.backend.service
 
 import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
 import com.mm.backend.testmodels.BookTestModel
@@ -9,6 +10,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -19,6 +21,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import java.util.*
 
 @ExtendWith(MockKExtension::class)
 @DisplayName("BookServiceTest")
@@ -32,6 +35,9 @@ internal class BookServiceTest {
 
     private val book1 = BookTestModel.book1
     private val book2 = BookTestModel.book2
+    private val updateBook2 = BookTestModel.updatedBook2
+    private val updatedBookInfo = UpdatedBookRequest(book2.id, null, null, null, "Mars")
+
 
     @Test
     @DisplayName("should return added book when adding a new book")
@@ -73,5 +79,29 @@ internal class BookServiceTest {
 
         verify(exactly = 1) { bookRepository.findAll(any(), pageable) }
         assertThat(actualBooks).isEqualTo(pagedBooks)
+    }
+
+    @Test
+    @DisplayName("should edit book given updated book info successfully")
+    fun editBookInfoSuccessfully() {
+        every { bookRepository.findById(any()) }.returns(Optional.of(book2))
+        every { bookRepository.save(any()) }.returns(updateBook2)
+
+        val actualUpdatedBook = bookService.editBookInfo(updatedBookInfo)
+
+        verify(exactly = 1) { bookRepository.findById(book2.id) }
+        verify(exactly = 1) { bookRepository.save(updateBook2) }
+        assertThat(actualUpdatedBook).isEqualTo(updateBook2)
+    }
+
+    @Test
+    @DisplayName("should failed to update book info when book is not found given book id")
+    fun editBookWhenBookNotFound() {
+        every { bookRepository.findById(any()) }.returns(Optional.empty())
+
+        Assertions.assertThatThrownBy {
+            bookService.editBookInfo(updatedBookInfo)
+        }.isInstanceOf(NoSuchElementException::class.java)
+            .hasMessage("Book not found for book id ${updatedBookInfo.id}")
     }
 }

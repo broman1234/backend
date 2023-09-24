@@ -14,6 +14,14 @@ data class BookRequest(
     val publisher: String? = null,
 )
 
+data class UpdatedBookRequest(
+    val id: Long,
+    val title: String? = null,
+    val author: String? = null,
+    val category: String? = null,
+    val publisher: String? = null,
+)
+
 object BookSpecifications {
 
     fun withRequest(bookRequest: BookRequest): Specification<Book> {

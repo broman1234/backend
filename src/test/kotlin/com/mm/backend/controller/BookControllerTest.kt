@@ -1,6 +1,7 @@
 package com.mm.backend.controller
 
 import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
 import com.mm.backend.testmodels.BookTestModel
@@ -10,6 +11,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -19,6 +21,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import java.util.NoSuchElementException
 
 @ExtendWith(MockKExtension::class)
 @DisplayName("BookControllerTest")
@@ -32,6 +35,8 @@ internal class BookControllerTest {
 
     private val book1 = BookTestModel.book1
     private val book2 = BookTestModel.book2
+    private val updatedBook2 = BookTestModel.updatedBook2
+    private val updatedBookRequest = UpdatedBookRequest(book2.id, null, null, null, "Mars")
 
     @Test
     @DisplayName("should return book successfully when adding a book")
@@ -74,9 +79,34 @@ internal class BookControllerTest {
                     "the picture of Dorian Gray",
                     null,
                     null,
-                    null), pageable)
+                    null
+                ), pageable
+            )
 
         verify(exactly = 1) { bookService.getBooksByRequest(bookRequest, pageable) }
         assertThat(actualBooks).isEqualTo(pagedBooks)
+    }
+
+    @Test
+    @DisplayName("should update book info given updated book info successfully")
+    fun editBookInfoSuccessfully() {
+        val updatedBookRequest = UpdatedBookRequest(book2.id, null, null, null, "Mars")
+        every { bookService.editBookInfo(any()) }.returns(updatedBook2)
+
+        val actualUpdatedBook2 = bookController.editBookInfo(book2.id, updatedBookRequest)
+
+        verify(exactly = 1) { bookService.editBookInfo(updatedBookRequest) }
+        assertThat(actualUpdatedBook2).isEqualTo(updatedBook2)
+    }
+
+    @Test
+    @DisplayName("should failed to update book info when book is not found given book id")
+    fun editBookWhenBookNotFound() {
+        every { bookService.editBookInfo(any()) }.throws(NoSuchElementException("Book not found for book id ${updatedBookRequest.id}"))
+
+        assertThatThrownBy {
+            bookController.editBookInfo(book2.id, updatedBookRequest)
+        }.isInstanceOf(NoSuchElementException::class.java)
+            .hasMessage("Book not found for book id ${updatedBookRequest.id}")
     }
 }

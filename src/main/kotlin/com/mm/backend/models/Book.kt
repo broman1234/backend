@@ -10,13 +10,13 @@ data class Book(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     @NotBlank(message = "Title is required")
-    val title: String,
+    var title: String,
     @NotBlank(message = "Author is required")
-    val author: String,
+    var author: String,
     @NotBlank(message = "Category is required")
-    val category: String,
+    var category: String,
     @NotBlank(message = "Publisher is required")
-    val publisher: String,
+    var publisher: String,
     val description: String? = null,
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     val comments: List<Comment>? = null,

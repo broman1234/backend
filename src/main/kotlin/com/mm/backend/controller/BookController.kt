@@ -1,6 +1,7 @@
 package com.mm.backend.controller
 
 import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
 import jakarta.validation.Valid
@@ -10,10 +11,11 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -36,4 +38,9 @@ class BookController(
         sort = ["title"],
         direction = Sort.Direction.ASC
     ) pageable: Pageable): Page<Book> = bookService.getBooksByRequest(bookRequest, pageable)
+
+    @PutMapping("/{bookId}")
+    fun editBookInfo(@PathVariable bookId: Long, @RequestBody updatedBook: UpdatedBookRequest): Book {
+        return bookService.editBookInfo(updatedBook)
+    }
 }
