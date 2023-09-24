@@ -43,4 +43,7 @@ class BookController(
     fun editBookInfo(@PathVariable bookId: Long, @RequestBody updatedBook: UpdatedBookRequest): Book {
         return bookService.editBookInfo(updatedBook)
     }
+
+    @GetMapping("/{bookId}")
+    fun getBookInfo(@PathVariable bookId: Long): Book = bookService.getBookInfo(bookId)
 }

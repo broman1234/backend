@@ -41,4 +41,8 @@ class BookService(
             }
             .let { bookRepository.save(it) }
     }
+
+    fun getBookInfo(bookId: Long): Book {
+        return bookRepository.findById(bookId).orElseThrow{ NoSuchElementException("Book is not found for book id $bookId !")}
+    }
 }

@@ -12,6 +12,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -103,5 +104,27 @@ internal class BookServiceTest {
             bookService.editBookInfo(updatedBookInfo)
         }.isInstanceOf(NoSuchElementException::class.java)
             .hasMessage("Book not found for book id ${updatedBookInfo.id}")
+    }
+
+    @Test
+    @DisplayName("should get a book details when book is found given book id")
+    fun getBookSuccessfullyGivenBookId() {
+        every { bookRepository.findById(any()) }.returns(Optional.of(book2))
+
+        val actualBook = bookService.getBookInfo(book2.id)
+
+        verify(exactly = 1) { bookRepository.findById(book2.id) }
+        assertThat(actualBook).isEqualTo(book2)
+    }
+
+    @Test
+    @DisplayName("should failed to get a book details when book is not found given book id")
+    fun getBookWhenBookNotFound() {
+        every { bookRepository.findById(any()) }.returns(Optional.empty())
+
+        assertThatThrownBy{
+            bookService.getBookInfo(book2.id)
+        }.isInstanceOf(NoSuchElementException::class.java)
+            .hasMessage("Book is not found for book id ${book2.id} !")
     }
 }

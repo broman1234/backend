@@ -109,4 +109,26 @@ internal class BookControllerTest {
         }.isInstanceOf(NoSuchElementException::class.java)
             .hasMessage("Book not found for book id ${updatedBookRequest.id}")
     }
+
+    @Test
+    @DisplayName("should get a book details when book is found given book id")
+    fun getBookSuccessfullyGivenBookId() {
+        every { bookService.getBookInfo(any()) }.returns(book2)
+
+        val actualBook = bookController.getBookInfo(book2.id)
+
+        verify(exactly = 1) { bookService.getBookInfo(book2.id)}
+        assertThat(actualBook).isEqualTo(book2)
+    }
+
+    @Test
+    @DisplayName("should failed to get a book details when book is not found given book id")
+    fun getBookWhenBookNotFound() {
+        every { bookService.getBookInfo(any()) }.throws(NoSuchElementException("Book is not found for book id ${book2.id} !"))
+
+        assertThatThrownBy {
+            bookController.getBookInfo(book2.id)
+        }.isInstanceOf(NoSuchElementException::class.java)
+            .hasMessage("Book is not found for book id ${book2.id} !")
+    }
 }
