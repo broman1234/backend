@@ -38,6 +38,7 @@ class BookService(
                 author = updatedBook.author.takeIf { !it.isNullOrBlank() } ?: author
                 category = updatedBook.category.takeIf { !it.isNullOrBlank() } ?: category
                 publisher = updatedBook.publisher.takeIf { !it.isNullOrBlank() } ?: publisher
+                description = updatedBook.description.takeIf { !it.isNullOrBlank() } ?: description
             }
             .let { bookRepository.save(it) }
     }

@@ -20,6 +20,7 @@ data class UpdatedBookRequest(
     val author: String? = null,
     val category: String? = null,
     val publisher: String? = null,
+    val description: String? = null
 )
 
 object BookSpecifications {

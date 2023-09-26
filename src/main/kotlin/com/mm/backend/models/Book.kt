@@ -17,7 +17,7 @@ data class Book(
     var category: String,
     @NotBlank(message = "Publisher is required")
     var publisher: String,
-    val description: String? = null,
+    var description: String? = null,
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     val comments: List<Comment>? = null,
     @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
