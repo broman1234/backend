@@ -7,7 +7,7 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
-data class BookRequest(
+data class GetBookRequest(
     val title: String? = null,
     val author: String? = null,
     val category: String? = null,
@@ -25,24 +25,24 @@ data class UpdatedBookRequest(
 
 object BookSpecifications {
 
-    fun withRequest(bookRequest: BookRequest): Specification<Book> {
+    fun withRequest(getBookRequest: GetBookRequest): Specification<Book> {
         return Specification { root: Root<Book>, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder ->
             val predicates = mutableListOf<Predicate>()
 
-            if (!bookRequest.title.isNullOrBlank()) {
-                predicates.add(criteriaBuilder.like(root.get("title"), "%" + bookRequest.title + "%"))
+            if (!getBookRequest.title.isNullOrBlank()) {
+                predicates.add(criteriaBuilder.like(root.get("title"), "%" + getBookRequest.title + "%"))
             }
 
-            if (!bookRequest.author.isNullOrBlank()) {
-                predicates.add(criteriaBuilder.like(root.get("author"), "%" + bookRequest.author + "%"))
+            if (!getBookRequest.author.isNullOrBlank()) {
+                predicates.add(criteriaBuilder.like(root.get("author"), "%" + getBookRequest.author + "%"))
             }
 
-            if (!bookRequest.category.isNullOrBlank()) {
-                predicates.add(criteriaBuilder.like(root.get("category"), "%" + bookRequest.category + "%"))
+            if (!getBookRequest.category.isNullOrBlank()) {
+                predicates.add(criteriaBuilder.like(root.get("category"), "%" + getBookRequest.category + "%"))
             }
 
-            if (!bookRequest.publisher.isNullOrBlank()) {
-                predicates.add(criteriaBuilder.like(root.get("publisher"), "%" + bookRequest.publisher + "%"))
+            if (!getBookRequest.publisher.isNullOrBlank()) {
+                predicates.add(criteriaBuilder.like(root.get("publisher"), "%" + getBookRequest.publisher + "%"))
             }
 
             criteriaBuilder.and(*predicates.toTypedArray())

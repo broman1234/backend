@@ -1,6 +1,6 @@
 package com.mm.backend.service
 
-import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.BookSpecifications
 import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.exception.BookAlreadyExistsException
@@ -26,8 +26,8 @@ class BookService(
             throw BookAlreadyExistsException(e.message)
         }
     }
-    fun getBooksByRequest(bookRequest: BookRequest, pageable: Pageable): Page<Book> {
-        return bookRepository.findAll(BookSpecifications.withRequest(bookRequest), pageable)
+    fun getBooksByRequest(getBookRequest: GetBookRequest, pageable: Pageable): Page<Book> {
+        return bookRepository.findAll(BookSpecifications.withRequest(getBookRequest), pageable)
     }
 
     fun editBookInfo(updatedBook: UpdatedBookRequest): Book {

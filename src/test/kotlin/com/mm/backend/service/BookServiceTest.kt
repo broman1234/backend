@@ -1,6 +1,6 @@
 package com.mm.backend.service
 
-import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
@@ -57,10 +57,10 @@ internal class BookServiceTest {
         val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
         val books = listOf(book1, book2)
         val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
-        val bookRequest = BookRequest()
+        val getBookRequest = GetBookRequest()
         every { bookRepository.findAll(any(), pageable) }.returns(pagedBooks)
 
-        val actualPagedBook = bookService.getBooksByRequest(bookRequest, pageable)
+        val actualPagedBook = bookService.getBooksByRequest(getBookRequest, pageable)
 
         verify(exactly = 1) { bookRepository.findAll(any(), pageable) }
         assertThat(actualPagedBook).isEqualTo(pagedBooks)
@@ -72,11 +72,11 @@ internal class BookServiceTest {
         val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
         val books = listOf(book1, book2)
         val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
-        val bookRequest = BookRequest("the picture of Dorian Gray", null, null, null)
+        val getBookRequest = GetBookRequest("the picture of Dorian Gray", null, null, null)
         every { bookRepository.findAll(any(), any()) }.returns(pagedBooks)
 
         val actualBooks =
-            bookService.getBooksByRequest(bookRequest, pageable)
+            bookService.getBooksByRequest(getBookRequest, pageable)
 
         verify(exactly = 1) { bookRepository.findAll(any(), pageable) }
         assertThat(actualBooks).isEqualTo(pagedBooks)

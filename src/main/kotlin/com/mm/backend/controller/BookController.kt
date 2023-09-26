@@ -1,6 +1,6 @@
 package com.mm.backend.controller
 
-import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
@@ -32,12 +32,12 @@ class BookController(
     }
 
     @GetMapping
-    fun getBooksByRequest(bookRequest: BookRequest, @PageableDefault(
+    fun getBooksByRequest(getBookRequest: GetBookRequest, @PageableDefault(
         page = 0,
         size = 5,
         sort = ["title"],
         direction = Sort.Direction.ASC
-    ) pageable: Pageable): Page<Book> = bookService.getBooksByRequest(bookRequest, pageable)
+    ) pageable: Pageable): Page<Book> = bookService.getBooksByRequest(getBookRequest, pageable)
 
     @PutMapping("/{bookId}")
     fun editBookInfo(@PathVariable bookId: Long, @RequestBody updatedBook: UpdatedBookRequest): Book {

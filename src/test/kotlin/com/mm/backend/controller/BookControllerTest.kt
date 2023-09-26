@@ -1,6 +1,6 @@
 package com.mm.backend.controller
 
-import com.mm.backend.dto.BookRequest
+import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.models.Book
 import com.mm.backend.service.BookService
@@ -55,12 +55,12 @@ internal class BookControllerTest {
         val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
         val books = listOf(book1, book2)
         val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
-        val bookRequest = BookRequest()
+        val getBookRequest = GetBookRequest()
         every { bookService.getBooksByRequest(any(), any()) }.returns(pagedBooks)
 
-        val actualPagedBooks = bookController.getBooksByRequest(bookRequest, pageable)
+        val actualPagedBooks = bookController.getBooksByRequest(getBookRequest, pageable)
 
-        verify(exactly = 1) { bookService.getBooksByRequest(bookRequest, pageable) }
+        verify(exactly = 1) { bookService.getBooksByRequest(getBookRequest, pageable) }
         assertThat(actualPagedBooks).isEqualTo(pagedBooks)
     }
 
@@ -70,12 +70,12 @@ internal class BookControllerTest {
         val pageable: Pageable = PageRequest.of(0, 20, Sort.by(Sort.Order.asc("title")))
         val books = listOf(book1, book2)
         val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
-        val bookRequest = BookRequest("the picture of Dorian Gray", null, null, null)
+        val getBookRequest = GetBookRequest("the picture of Dorian Gray", null, null, null)
         every { bookService.getBooksByRequest(any(), any()) }.returns(pagedBooks)
 
         val actualBooks =
             bookController.getBooksByRequest(
-                BookRequest(
+                GetBookRequest(
                     "the picture of Dorian Gray",
                     null,
                     null,
@@ -83,7 +83,7 @@ internal class BookControllerTest {
                 ), pageable
             )
 
-        verify(exactly = 1) { bookService.getBooksByRequest(bookRequest, pageable) }
+        verify(exactly = 1) { bookService.getBooksByRequest(getBookRequest, pageable) }
         assertThat(actualBooks).isEqualTo(pagedBooks)
     }
 
