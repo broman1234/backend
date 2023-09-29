@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import java.util.*
+import kotlin.NoSuchElementException
 
 @ExtendWith(MockKExtension::class)
 @DisplayName("BookServiceTest")
@@ -122,9 +123,19 @@ internal class BookServiceTest {
     fun getBookWhenBookNotFound() {
         every { bookRepository.findById(any()) }.returns(Optional.empty())
 
-        assertThatThrownBy{
+        assertThatThrownBy {
             bookService.getBookInfo(book2.id)
         }.isInstanceOf(NoSuchElementException::class.java)
             .hasMessage("Book is not found for book id ${book2.id} !")
+    }
+
+    @Test
+    @DisplayName("should delete books given book ids")
+    fun deleteBooksByIds() {
+        every { bookRepository.deleteAllById(any()) }.returns(Unit)
+
+        bookService.deleteByIds(listOf(book1.id, book2.id))
+
+        verify(exactly = 1) { bookRepository.deleteAllById(listOf(book1.id, book2.id)) }
     }
 }

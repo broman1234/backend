@@ -117,7 +117,7 @@ internal class BookControllerTest {
 
         val actualBook = bookController.getBookInfo(book2.id)
 
-        verify(exactly = 1) { bookService.getBookInfo(book2.id)}
+        verify(exactly = 1) { bookService.getBookInfo(book2.id) }
         assertThat(actualBook).isEqualTo(book2)
     }
 
@@ -130,5 +130,15 @@ internal class BookControllerTest {
             bookController.getBookInfo(book2.id)
         }.isInstanceOf(NoSuchElementException::class.java)
             .hasMessage("Book is not found for book id ${book2.id} !")
+    }
+
+    @Test
+    @DisplayName("should delete books given book ids")
+    fun deleteBooksByIds() {
+        every { bookService.deleteByIds(any())}.returns(Unit)
+
+        bookController.deleteByIds(listOf(book1.id, book2.id))
+
+        verify(exactly = 1) { bookService.deleteByIds(listOf(book1.id, book2.id)) }
     }
 }
