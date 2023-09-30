@@ -19,6 +19,11 @@ class ExceptionHandler {
         return returnApiErrorResponseEntity(request, exception, httpStatus = HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
+    @ExceptionHandler(NoSuchMethodException::class)
+    fun noSuchMethodExceptionHandler(exception: Exception, request: WebRequest): ResponseEntity<Any> {
+        return returnApiErrorResponseEntity(request, exception, httpStatus = HttpStatus.NOT_FOUND)
+    }
+
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(exception: IllegalArgumentException, request: WebRequest): ResponseEntity<Any> {
         return returnApiErrorResponseEntity(request, exception, httpStatus = HttpStatus.UNPROCESSABLE_ENTITY)
