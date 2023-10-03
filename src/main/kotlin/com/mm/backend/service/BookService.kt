@@ -3,6 +3,7 @@ package com.mm.backend.service
 import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.BookSpecifications
 import com.mm.backend.dto.UpdatedBookRequest
+import com.mm.backend.enums.Category
 import com.mm.backend.exception.BookAlreadyExistsException
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
@@ -10,7 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.util.NoSuchElementException
+import java.util.*
 import javax.transaction.Transactional
 
 @Service
@@ -26,6 +27,7 @@ class BookService(
             throw BookAlreadyExistsException(e.message)
         }
     }
+
     fun getBooksByRequest(getBookRequest: GetBookRequest, pageable: Pageable): Page<Book> {
         return bookRepository.findAll(BookSpecifications.withRequest(getBookRequest), pageable)
     }
@@ -36,7 +38,8 @@ class BookService(
             .apply {
                 title = updatedBook.title.takeIf { !it.isNullOrBlank() } ?: title
                 author = updatedBook.author.takeIf { !it.isNullOrBlank() } ?: author
-                category = updatedBook.category.takeIf { !it.isNullOrBlank() } ?: category
+                category = updatedBook.category.takeIf { !it.isNullOrBlank() }?.let { Category.valueOf(it.uppercase()) }
+                    ?: category
                 publisher = updatedBook.publisher.takeIf { !it.isNullOrBlank() } ?: publisher
                 description = updatedBook.description.takeIf { !it.isNullOrBlank() } ?: description
             }
@@ -44,8 +47,10 @@ class BookService(
     }
 
     fun getBookInfo(bookId: Long): Book {
-        return bookRepository.findById(bookId).orElseThrow{ NoSuchElementException("Book is not found for book id $bookId !")}
+        return bookRepository.findById(bookId)
+            .orElseThrow { NoSuchElementException("Book is not found for book id $bookId !") }
     }
 
     fun deleteByIds(bookIds: List<Long>) = bookRepository.deleteAllById(bookIds)
+    fun getCategories(): List<String> = Category.values().map { it.name }
 }

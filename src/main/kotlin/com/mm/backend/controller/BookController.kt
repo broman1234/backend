@@ -33,12 +33,14 @@ class BookController(
     }
 
     @GetMapping
-    fun getBooksByRequest(getBookRequest: GetBookRequest, @PageableDefault(
-        page = 0,
-        size = 5,
-        sort = ["title"],
-        direction = Sort.Direction.ASC
-    ) pageable: Pageable): Page<Book> = bookService.getBooksByRequest(getBookRequest, pageable)
+    fun getBooksByRequest(
+        getBookRequest: GetBookRequest, @PageableDefault(
+            page = 0,
+            size = 5,
+            sort = ["title"],
+            direction = Sort.Direction.ASC
+        ) pageable: Pageable
+    ): Page<Book> = bookService.getBooksByRequest(getBookRequest, pageable)
 
     @PutMapping("/{bookId}")
     fun editBookInfo(@PathVariable bookId: Long, @RequestBody updatedBook: UpdatedBookRequest): Book {
@@ -50,4 +52,7 @@ class BookController(
 
     @DeleteMapping("/{bookIds}")
     fun deleteByIds(@PathVariable bookIds: List<Long>) = bookService.deleteByIds(bookIds)
+
+    @GetMapping("/categories")
+    fun getCategories(): List<String> = bookService.getCategories()
 }

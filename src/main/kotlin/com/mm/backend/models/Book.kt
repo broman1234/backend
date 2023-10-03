@@ -1,5 +1,6 @@
 package com.mm.backend.models
 
+import com.mm.backend.enums.Category
 import jakarta.validation.constraints.NotBlank
 import javax.persistence.*
 
@@ -14,7 +15,8 @@ data class Book(
     @NotBlank(message = "Author is required")
     var author: String,
     @NotBlank(message = "Category is required")
-    var category: String,
+    @Enumerated(EnumType.STRING)
+    var category: Category,
     @NotBlank(message = "Publisher is required")
     var publisher: String,
     var description: String? = null,
