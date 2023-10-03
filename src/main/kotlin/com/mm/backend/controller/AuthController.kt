@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.mm.backend.configuration.JwtTokenUtil
 import com.mm.backend.dto.LoginUserRequest
 import com.mm.backend.dto.RegisterUserRequest
-import com.mm.backend.models.Role
 import com.mm.backend.models.User
 import com.mm.backend.repository.UserRepository
 import com.mm.backend.service.RoleService
@@ -43,12 +42,12 @@ class AuthController(
         return userService.registerUser(
             registerUserRequest.username,
             registerUserRequest.password,
-            registerUserRequest.roles
+            registerUserRequest.role
         )
     }
 
     @GetMapping("/roles")
-    fun getRoles(): List<Role> {
+    fun getRoles(): List<String> {
         return rolesService.getRoles()
     }
 

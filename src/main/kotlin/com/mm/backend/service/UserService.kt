@@ -1,7 +1,7 @@
 package com.mm.backend.service
 
+import com.mm.backend.enums.Role
 import com.mm.backend.exception.UsernameAlreadyExistsException
-import com.mm.backend.models.Role
 import com.mm.backend.models.User
 import com.mm.backend.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -12,7 +12,7 @@ class UserService(
     private val userRepository: UserRepository
 ) {
 
-    fun registerUser(username: String, password: String, roles: List<Role>): User {
+    fun registerUser(username: String, password: String, role: Role): User {
 
         val existingUser = userRepository.findByUsername(username)
         if (existingUser != null) {
@@ -20,7 +20,7 @@ class UserService(
         }
         val encoder = BCryptPasswordEncoder()
         val result: String = encoder.encode(password)
-        val user = User(username = username, password = result, roles = roles)
+        val user = User(username = username, password = result, role = role)
         return userRepository.save(user)
     }
 }

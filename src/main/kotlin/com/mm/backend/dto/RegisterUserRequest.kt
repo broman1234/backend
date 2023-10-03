@@ -1,11 +1,11 @@
 package com.mm.backend.dto
 
-import com.mm.backend.models.Role
+import com.mm.backend.enums.Role
 
 data class RegisterUserRequest(
     val username: String,
     val password: String,
-    val roles: List<Role>
+    val role: Role
 )
 
 data class LoginUserRequest(

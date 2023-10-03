@@ -14,9 +14,9 @@ class CustomUserDetailsService(private val userRepository: UserRepository) : Use
         val user = userRepository.findByUsername(username)
             ?: throw UsernameNotFoundException("User not found with username: $username")
         val authorities = ArrayList<SimpleGrantedAuthority>()
-        user.roles.forEach { role ->
-            authorities.add(SimpleGrantedAuthority(role.roleName))
-        }
+
+        authorities.add(SimpleGrantedAuthority(user.role.name))
+
         return org.springframework.security.core.userdetails.User(user.username, user.password, authorities)
     }
 }

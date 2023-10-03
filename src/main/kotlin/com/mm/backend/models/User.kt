@@ -1,5 +1,6 @@
 package com.mm.backend.models
 
+import com.mm.backend.enums.Role
 import lombok.RequiredArgsConstructor
 import javax.persistence.*
 
@@ -15,15 +16,8 @@ data class User(
 
     val password: String,
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "user_roles",
-        joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "role_id")]
-    )
-    val roles: List<Role> = mutableListOf(),
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    val comments: List<Comment> = mutableListOf(),
+    @Enumerated(EnumType.STRING)
+    val role: Role,
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -32,14 +26,4 @@ data class User(
         inverseJoinColumns = [JoinColumn(name = "book_id")]
     )
     val books: List<Book> = mutableListOf(),
-)
-
-@Entity
-@Table(name = "roles")
-data class Role(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
-
-    val roleName: String,
 )
