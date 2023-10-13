@@ -53,4 +53,7 @@ class BookService(
 
     fun deleteByIds(bookIds: List<Long>) = bookRepository.deleteAllById(bookIds)
     fun getCategories(): List<String> = Category.values().map { it.name }
+    fun getBooksOrderByPopularityRank(): List<Book> {
+        TODO("Not yet implemented")
+    }
 }

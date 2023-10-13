@@ -15,7 +15,9 @@ object BookTestModel {
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                "and the corrupting influence of art and beauty"
+                "and the corrupting influence of art and beauty",
+        wantToReadCount = 2,
+        haveReadCount = 1
     )
 
     val book2 = Book(
@@ -27,7 +29,9 @@ object BookTestModel {
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                "and the corrupting influence of art and beauty"
+                "and the corrupting influence of art and beauty",
+        wantToReadCount = 2,
+        haveReadCount = 2
     )
 
     val updatedBook2 = Book(
@@ -39,6 +43,8 @@ object BookTestModel {
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                "and the corrupting influence of art and beauty"
+                "and the corrupting influence of art and beauty",
+        wantToReadCount = 2,
+        haveReadCount = 2
     )
 }
