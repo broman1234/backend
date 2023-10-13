@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api/admin/books")
-class BookController(
+class AdminBookController(
     private val bookService: BookService
 ) {
 

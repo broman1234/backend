@@ -24,14 +24,14 @@ import org.springframework.data.domain.Sort
 import java.util.NoSuchElementException
 
 @ExtendWith(MockKExtension::class)
-@DisplayName("BookControllerTest")
-internal class BookControllerTest {
+@DisplayName("AdminBookControllerTest")
+internal class AdminBookControllerTest {
 
     @MockK
     private lateinit var bookService: BookService
 
     @InjectMockKs
-    private lateinit var bookController: BookController
+    private lateinit var bookController: AdminBookController
 
     private val book1 = BookTestModel.book1
     private val book2 = BookTestModel.book2

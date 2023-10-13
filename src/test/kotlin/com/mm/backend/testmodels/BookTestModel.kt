@@ -1,5 +1,6 @@
 package com.mm.backend.testmodels
 
+import com.mm.backend.enums.Category
 import com.mm.backend.models.Book
 
 
@@ -9,7 +10,7 @@ object BookTestModel {
         id = 1,
         title = "the picture of Dorian Gray",
         author = "Oscar Wilde",
-        category = "fiction",
+        category = Category.FICTION,
         publisher = "Galaxy",
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
@@ -21,7 +22,7 @@ object BookTestModel {
         id = 2,
         title = "the picture of Dorian Gray",
         author = "Oscar Wilde",
-        category = "fiction",
+        category = Category.FICTION,
         publisher = "Earth",
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
@@ -33,7 +34,7 @@ object BookTestModel {
         id = 2,
         title = "the picture of Dorian Gray",
         author = "Oscar Wilde",
-        category = "fiction",
+        category = Category.FICTION,
         publisher = "Mars",
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
