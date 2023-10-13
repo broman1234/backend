@@ -1,5 +1,6 @@
 package com.mm.backend.models
 
+import com.mm.backend.common.BaseEntity
 import com.mm.backend.enums.Category
 import jakarta.validation.constraints.NotBlank
 import javax.persistence.*
@@ -20,11 +21,11 @@ data class Book(
     @NotBlank(message = "Publisher is required")
     var publisher: String,
     var description: String? = null,
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    val comments: List<Comment>? = null,
-    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
-    val users: List<User>? = null
-)
+    val rating: Int? = null,
+    val ratingCount: Long? = null,
+    val wantToReadCount: Long? = null,
+    val haveReadCount: Long? = null
+) : BaseEntity()
 
 @Entity
 @Table(name = "comments")
