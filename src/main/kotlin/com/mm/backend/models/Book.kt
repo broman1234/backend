@@ -3,6 +3,7 @@ package com.mm.backend.models
 import com.mm.backend.common.BaseEntity
 import com.mm.backend.enums.Category
 import jakarta.validation.constraints.NotBlank
+import org.hibernate.annotations.Formula
 import javax.persistence.*
 
 @Entity
@@ -21,10 +22,13 @@ data class Book(
     @NotBlank(message = "Publisher is required")
     var publisher: String,
     var description: String? = null,
+    val coverImage: String? = null,
     val rating: Int? = null,
     val ratingCount: Long? = null,
     val wantToReadCount: Long? = null,
-    val haveReadCount: Long? = null
+    val haveReadCount: Long? = null,
+    @Formula("want_to_read_count + have_read_count")
+    val totalReaders: Long? = null
 ) : BaseEntity()
 
 @Entity

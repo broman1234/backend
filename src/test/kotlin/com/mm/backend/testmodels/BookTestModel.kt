@@ -2,6 +2,7 @@ package com.mm.backend.testmodels
 
 import com.mm.backend.enums.Category
 import com.mm.backend.models.Book
+import java.time.Instant
 
 
 object BookTestModel {
@@ -12,10 +13,11 @@ object BookTestModel {
         author = "Oscar Wilde",
         category = Category.FICTION,
         publisher = "Galaxy",
+        coverImage = "",
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                "and the corrupting influence of art and beauty",
+                "and the corrupting influence of art and",
         wantToReadCount = 2,
         haveReadCount = 1
     )
@@ -26,10 +28,11 @@ object BookTestModel {
         author = "Oscar Wilde",
         category = Category.FICTION,
         publisher = "Earth",
+        coverImage = "",
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                "and the corrupting influence of art and beauty",
+                "and the corrupting influence of art and",
         wantToReadCount = 2,
         haveReadCount = 2
     )
@@ -40,10 +43,11 @@ object BookTestModel {
         author = "Oscar Wilde",
         category = Category.FICTION,
         publisher = "Mars",
+        coverImage = "",
         description = "a famous Irish writer and playwright. " +
                 "It was first published in 1890 and is considered one of Wilde's most significant works. " +
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
-                "and the corrupting influence of art and beauty",
+                "and the corrupting influence of art and",
         wantToReadCount = 2,
         haveReadCount = 2
     )

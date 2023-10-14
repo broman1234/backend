@@ -45,6 +45,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation group: 'io.mockk', name: 'mockk', version: '1.13.7'
+    testImplementation("com.h2database:h2:2.2.222")
 }
 
 tasks.withType(KotlinCompile) {

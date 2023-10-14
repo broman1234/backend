@@ -138,4 +138,18 @@ internal class BookServiceTest {
 
         verify(exactly = 1) { bookRepository.deleteAllById(listOf(book1.id, book2.id)) }
     }
+
+    @Test
+    @DisplayName("should return book list successfully order by popularity rank")
+    fun getBooksOrderByPopularityRank() {
+        val pageable: Pageable = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("totalReaders")))
+        val books = listOf(book2, book1)
+        val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
+        every { bookRepository.findAll(pageable) }.returns(pagedBooks)
+
+        val actualPagedBookContent = bookService.getBooksOrderByPopularityRank()
+
+        verify(exactly = 1) { bookRepository.findAll(pageable) }
+        assertThat(actualPagedBookContent).isEqualTo(pagedBooks.content)
+    }
 }

@@ -17,5 +17,5 @@ open class BaseEntity() {
 
     @LastModifiedDate
     @Column(name = "updated_at", updatable = true)
-    private lateinit var updatedAt: Instant
+    lateinit var updatedAt: Instant
 }

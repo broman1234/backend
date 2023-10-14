@@ -9,7 +9,9 @@ import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.transaction.Transactional
@@ -53,7 +55,11 @@ class BookService(
 
     fun deleteByIds(bookIds: List<Long>) = bookRepository.deleteAllById(bookIds)
     fun getCategories(): List<String> = Category.values().map { it.name }
+
     fun getBooksOrderByPopularityRank(): List<Book> {
-        TODO("Not yet implemented")
+        val sort: Sort = Sort.by(Sort.Order.desc("totalReaders"))
+        val pageRequest: PageRequest = PageRequest.of(0, 10, sort)
+        val topBooksPage: Page<Book> = bookRepository.findAll(pageRequest)
+        return topBooksPage.content
     }
 }
