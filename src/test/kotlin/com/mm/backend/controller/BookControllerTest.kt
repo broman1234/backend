@@ -1,5 +1,6 @@
 package com.mm.backend.controller
 
+import com.mm.backend.dto.book.PopularRankBookResponseDTO
 import com.mm.backend.service.BookService
 import com.mm.backend.testmodels.BookTestModel
 import io.mockk.every
@@ -24,7 +25,14 @@ internal class BookControllerTest {
     @Test
     @DisplayName("should return book list successfully order by popularity rank")
     fun getBooksOrderByPopularityRank() {
-        val books = listOf(BookTestModel.book2, BookTestModel.book1)
+        val books = listOf(BookTestModel.book2, BookTestModel.book1).map { PopularRankBookResponseDTO(
+            id = it.id,
+            title = it.title,
+            author = it.author,
+            publisher = it.publisher,
+            coverImage = it.coverImage,
+            rating = it.rating
+        ) }
         every { bookService.getBooksOrderByPopularityRank() }.returns(books)
 
         val result = bookController.getBooksOrderByPopularityRank()

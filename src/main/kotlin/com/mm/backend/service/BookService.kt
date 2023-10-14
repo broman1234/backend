@@ -3,6 +3,7 @@ package com.mm.backend.service
 import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.BookSpecifications
 import com.mm.backend.dto.UpdatedBookRequest
+import com.mm.backend.dto.book.PopularRankBookResponseDTO
 import com.mm.backend.enums.Category
 import com.mm.backend.exception.BookAlreadyExistsException
 import com.mm.backend.models.Book
@@ -56,10 +57,19 @@ class BookService(
     fun deleteByIds(bookIds: List<Long>) = bookRepository.deleteAllById(bookIds)
     fun getCategories(): List<String> = Category.values().map { it.name }
 
-    fun getBooksOrderByPopularityRank(): List<Book> {
+    fun getBooksOrderByPopularityRank(): List<PopularRankBookResponseDTO> {
         val sort: Sort = Sort.by(Sort.Order.desc("totalReaders"))
         val pageRequest: PageRequest = PageRequest.of(0, 10, sort)
         val topBooksPage: Page<Book> = bookRepository.findAll(pageRequest)
-        return topBooksPage.content
+        return topBooksPage.content.map {
+            PopularRankBookResponseDTO(
+                id = it.id,
+                title = it.title,
+                author = it.author,
+                publisher = it.publisher,
+                coverImage = it.coverImage,
+                rating = it.rating
+            )
+        }
     }
 }

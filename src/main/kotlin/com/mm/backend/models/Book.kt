@@ -22,12 +22,12 @@ data class Book(
     @NotBlank(message = "Publisher is required")
     var publisher: String,
     var description: String? = null,
-    val coverImage: String? = null,
+    val coverImage: String,
     val rating: Int? = null,
     val ratingCount: Long? = null,
     val wantToReadCount: Long? = null,
     val haveReadCount: Long? = null,
-    @Formula("want_to_read_count + have_read_count")
+    @Formula("COALESCE(want_to_read_count, 0) + COALESCE(have_read_count, 0)")
     val totalReaders: Long? = null
 ) : BaseEntity()
 

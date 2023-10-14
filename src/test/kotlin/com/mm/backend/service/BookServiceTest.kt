@@ -2,6 +2,7 @@ package com.mm.backend.service
 
 import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.UpdatedBookRequest
+import com.mm.backend.dto.book.PopularRankBookResponseDTO
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
 import com.mm.backend.testmodels.BookTestModel
@@ -150,6 +151,13 @@ internal class BookServiceTest {
         val actualPagedBookContent = bookService.getBooksOrderByPopularityRank()
 
         verify(exactly = 1) { bookRepository.findAll(pageable) }
-        assertThat(actualPagedBookContent).isEqualTo(pagedBooks.content)
+        assertThat(actualPagedBookContent).isEqualTo(pagedBooks.content.map { PopularRankBookResponseDTO(
+            id = it.id,
+            title = it.title,
+            author = it.author,
+            publisher = it.publisher,
+            coverImage = it.coverImage,
+            rating = it.rating
+        ) })
     }
 }
