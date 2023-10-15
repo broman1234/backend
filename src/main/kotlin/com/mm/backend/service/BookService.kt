@@ -4,6 +4,7 @@ import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.BookSpecifications
 import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.dto.book.PopularRankBookResponseDTO
+import com.mm.backend.dto.book.RatingRankBookResponseDTO
 import com.mm.backend.enums.Category
 import com.mm.backend.exception.BookAlreadyExistsException
 import com.mm.backend.models.Book
@@ -68,7 +69,23 @@ class BookService(
                 author = it.author,
                 publisher = it.publisher,
                 coverImage = it.coverImage,
-                rating = it.rating
+                rating = it.rating,
+                ratingCount = it.ratingCount
+            )
+        }
+    }
+
+    fun getBooksOrderByRatingRank(pageable: Pageable): Page<RatingRankBookResponseDTO> {
+        val topBooksPage: Page<Book> = bookRepository.findAll(pageable)
+        return topBooksPage.map {
+            RatingRankBookResponseDTO(
+                id = it.id,
+                title = it.title,
+                author = it.author,
+                publisher = it.publisher,
+                coverImage = it.coverImage,
+                rating = it.rating,
+                ratingCount = it.ratingCount
             )
         }
     }

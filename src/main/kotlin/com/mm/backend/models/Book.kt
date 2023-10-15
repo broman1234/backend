@@ -28,7 +28,9 @@ data class Book(
     val wantToReadCount: Long? = null,
     val haveReadCount: Long? = null,
     @Formula("COALESCE(want_to_read_count, 0) + COALESCE(have_read_count, 0)")
-    val totalReaders: Long? = null
+    val totalReaders: Long? = null,
+    @Formula("COALESCE(rating, 0) * COALESCE(rating_count, 0)")
+    val ratingRank: Int? = null
 ) : BaseEntity()
 
 @Entity

@@ -19,7 +19,9 @@ object BookTestModel {
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
                 "and the corrupting influence of art and",
         wantToReadCount = 2,
-        haveReadCount = 1
+        haveReadCount = 1,
+        rating = 8,
+        ratingCount = 11
     )
 
     val book2 = Book(
@@ -34,7 +36,9 @@ object BookTestModel {
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
                 "and the corrupting influence of art and",
         wantToReadCount = 2,
-        haveReadCount = 2
+        haveReadCount = 2,
+        rating = 9,
+        ratingCount = 10
     )
 
     val updatedBook2 = Book(
@@ -49,6 +53,8 @@ object BookTestModel {
                 "The novel is a Gothic and philosophical tale that explores themes of morality, vanity, " +
                 "and the corrupting influence of art and",
         wantToReadCount = 2,
-        haveReadCount = 2
+        haveReadCount = 2,
+        rating = 9,
+        ratingCount = 10
     )
 }

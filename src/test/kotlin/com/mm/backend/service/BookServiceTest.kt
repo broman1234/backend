@@ -3,6 +3,7 @@ package com.mm.backend.service
 import com.mm.backend.dto.GetBookRequest
 import com.mm.backend.dto.UpdatedBookRequest
 import com.mm.backend.dto.book.PopularRankBookResponseDTO
+import com.mm.backend.dto.book.RatingRankBookResponseDTO
 import com.mm.backend.models.Book
 import com.mm.backend.repository.BookRepository
 import com.mm.backend.testmodels.BookTestModel
@@ -157,7 +158,33 @@ internal class BookServiceTest {
             author = it.author,
             publisher = it.publisher,
             coverImage = it.coverImage,
-            rating = it.rating
+            rating = it.rating,
+            ratingCount = it.ratingCount
         ) })
+    }
+
+    @Test
+    @DisplayName("should return book list successfully order by rating")
+    fun getBooksOrderByRating() {
+        val pageable: Pageable = PageRequest.of(0, 25, Sort.by(Sort.Order.desc("ratingRank")))
+        val books = listOf(book2, book1)
+        val pagedBooks: Page<Book> = PageImpl(books, pageable, books.size.toLong())
+        val pagedRatingRankBookResponseDTO: Page<RatingRankBookResponseDTO> = pagedBooks.map {
+            RatingRankBookResponseDTO(
+                id = it.id,
+                title = it.title,
+                author = it.author,
+                publisher = it.publisher,
+                coverImage = it.coverImage,
+                rating = it.rating,
+                ratingCount = it.ratingCount
+            )
+        }
+        every { bookRepository.findAll(pageable) }.returns(pagedBooks)
+
+        val actualPagedBookContent = bookService.getBooksOrderByRatingRank(pageable)
+
+        verify(exactly = 1) { bookRepository.findAll(pageable) }
+        assertThat(actualPagedBookContent.content).isEqualTo(pagedRatingRankBookResponseDTO.content)
     }
 }

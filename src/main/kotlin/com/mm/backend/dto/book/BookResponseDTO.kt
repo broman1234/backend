@@ -6,5 +6,16 @@ data class PopularRankBookResponseDTO(
     val author: String,
     val publisher: String,
     val coverImage: String,
-    val rating: Int?
+    val rating: Int?,
+    val ratingCount: Long?
+)
+
+data class RatingRankBookResponseDTO(
+    val id: Long,
+    val title: String,
+    val author: String,
+    val publisher: String,
+    val coverImage: String,
+    val rating: Int?,
+    val ratingCount: Long?
 )
