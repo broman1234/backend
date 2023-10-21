@@ -1,0 +1,1 @@
+alter table books change column rating_count rating_count bigint default 0;
